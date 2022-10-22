@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "私は暇じゃないです。取り込み中です。",
+    "productName": "kagemusha",
     "version": "0.0.0"
   },
   "tauri": {
@@ -55,10 +55,11 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 500,
+        "height": 200,
         "resizable": false,
         "title": "影武者",
-        "width": 500
+        "width": 450,
+        "decorations": false   
       }
     ]
   }
