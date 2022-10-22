@@ -1,7 +1,5 @@
-# Tauri + React + Typescript
+### 影武者　　
+影武者はTeamsで退席中ステータスになるのを防ぐアプリです。  
+お茶買いに行ったりするときに使います。  
+tauri触ってrustの勉強しようと思って作成しましたが、ほとんどweb技術でできてしまいました。。。
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
-
-## Recommended IDE Setup
-
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
