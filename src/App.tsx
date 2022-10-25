@@ -7,6 +7,8 @@ import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Grid from '@mui/material/Grid';
 import ShowStateComponent from './components/ShowStateComponent';
 import Titlebar from './components/window/titlebar/Titlebar';
+import style from './style.module.scss';
+import ScheduleCards from './components/organization/ScheduleCards';
 
 function App() {
   const durationTime = 60 * 1000; // 1分に一回押下する
@@ -36,9 +38,12 @@ function App() {
   };
 
   return (
-    <>
+    <div className={style.app}>
       <Titlebar />
       <ShowStateComponent show={isBusy} />
+
+      <ScheduleCards />
+
       <Grid container justifyContent="space-around" alignItems="center">
         <Grid item xs={4}>
           <Button
@@ -61,7 +66,7 @@ function App() {
           </Button>
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 }
 

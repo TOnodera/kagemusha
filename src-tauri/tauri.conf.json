@@ -56,8 +56,8 @@
       {
         "fullscreen": false,
         "height": 200,
-        "resizable": false,
-        "title": "影武者",
+        "resizable": true,
+        "title": "kagemusha",
         "width": 450,
         "decorations": false   
       }
