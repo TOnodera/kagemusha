@@ -1,12 +1,16 @@
-import Select from '../selects/select/Select';
-import style from './style.module.scss';
+import Select from '../select/Select';
 interface Props {
-  dataList: number[];
+  dataList: string[];
   placeHolderText: string;
+  value?: string;
 }
 const MinuteSelect = (props: Props) => {
   return (
-    <Select dataList={props.dataList} placeHolderText={props.placeHolderText} />
+    <Select
+      value={props.value}
+      dataList={props.dataList}
+      placeHolderText={props.placeHolderText}
+    />
   );
 };
 

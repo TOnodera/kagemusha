@@ -3,22 +3,42 @@ import HourSelect from '../../atom/select/hour-select/HourSelect';
 import MinuteSelect from '../../atom/select/minute-select/MinuteSelect';
 import style from './style.module.scss';
 
-const ScheduleSelector = () => {
+interface Props {
+  from?: string;
+  to?: string;
+}
+const ScheduleSelector = (props: Props) => {
   return (
     <>
       <div className={style.timeSelector}>
         <div>
-          <HourSelect dataList={HOURS} placeHolderText="時" />
+          <HourSelect
+            value={props.from ? props.from.split(':')[0] : undefined}
+            dataList={HOURS}
+            placeHolderText="時"
+          />
         </div>
         <div>
-          <MinuteSelect dataList={MINUTES} placeHolderText="分" />
+          <MinuteSelect
+            value={props.from ? props.from.split(':')[1] : undefined}
+            dataList={MINUTES}
+            placeHolderText="分"
+          />
         </div>
         <div>～</div>
         <div>
-          <HourSelect dataList={HOURS} placeHolderText="時" />
+          <HourSelect
+            value={props.to ? props.to.split(':')[0] : undefined}
+            dataList={HOURS}
+            placeHolderText="時"
+          />
         </div>
         <div>
-          <MinuteSelect dataList={MINUTES} placeHolderText="分" />
+          <MinuteSelect
+            value={props.to ? props.to.split(':')[1] : undefined}
+            dataList={MINUTES}
+            placeHolderText="分"
+          />
         </div>
         <div className={style.remove}>削除</div>
       </div>

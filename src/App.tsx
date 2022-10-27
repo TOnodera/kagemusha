@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
 import './App.scss';
-import ShowStateComponent from './components/ShowStateComponent';
 import Titlebar from './components/window/titlebar/Titlebar';
-import ScheduleCards from './components/organization/ScheduleCards';
+import ScheduleCards from './components/organization/schedule-cards/ScheduleCards';
 
 function App() {
   const durationTime = 60 * 1000; // 1分に一回押下する
@@ -33,12 +32,10 @@ function App() {
   };
 
   return (
-    <div>
+    <>
       <Titlebar />
-      <ShowStateComponent show={isBusy} />
-
       <ScheduleCards />
-    </div>
+    </>
   );
 }
 

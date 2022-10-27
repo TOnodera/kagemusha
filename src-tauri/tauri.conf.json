@@ -55,10 +55,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 200,
+        "height":700,
         "resizable": true,
         "title": "kagemusha",
-        "width": 450,
+        "width": 1160,
         "decorations": false   
       }
     ]
