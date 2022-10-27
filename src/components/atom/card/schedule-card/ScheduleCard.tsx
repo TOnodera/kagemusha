@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import ScheduleSelector from '../../../molecule/schedule-selector/ScheduleSelector';
 import Card from '../card/Card';
 import style from './style.module.scss';
@@ -15,7 +14,6 @@ interface Props {
 }
 export default function ScheduleCard(props: Props) {
   const { onChangeSchedule, cardIdx, schedules, onDeleteSchedule } = props;
-  const [scheduleSelectorNum, setScheduleSelectorNum] = useState(1);
   return (
     <Card>
       {schedules.map((schedule, idx) => (
@@ -23,7 +21,9 @@ export default function ScheduleCard(props: Props) {
           key={idx}
           from={schedule.from}
           to={schedule.to}
-          onDeleteSchedule={onDeleteSchedule}
+          onDeleteSchedule={() => {
+            onDeleteSchedule(cardIdx, idx);
+          }}
         />
       ))}
       <div className={style.scheduleCard}>

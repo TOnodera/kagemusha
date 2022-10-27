@@ -6,6 +6,7 @@ import style from './style.module.scss';
 interface Props {
   from?: string;
   to?: string;
+  onDeleteSchedule: () => void;
 }
 const ScheduleSelector = (props: Props) => {
   return (
@@ -40,7 +41,9 @@ const ScheduleSelector = (props: Props) => {
             placeHolderText="分"
           />
         </div>
-        <div className={style.remove}>削除</div>
+        <div className={style.remove} onClick={props.onDeleteSchedule}>
+          削除
+        </div>
       </div>
     </>
   );
