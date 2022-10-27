@@ -1,10 +1,6 @@
 import { useState } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
 import './App.css';
-import { Button } from '@mui/material';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Grid from '@mui/material/Grid';
 import ShowStateComponent from './components/ShowStateComponent';
 import Titlebar from './components/window/titlebar/Titlebar';
 import style from './style.module.scss';
@@ -43,29 +39,6 @@ function App() {
       <ShowStateComponent show={isBusy} />
 
       <ScheduleCards />
-
-      <Grid container justifyContent="space-around" alignItems="center">
-        <Grid item xs={4}>
-          <Button
-            variant="contained"
-            startIcon={<PlayCircleOutlineIcon />}
-            onClick={startPressControlKeyProcess}
-            fullWidth={true}
-          >
-            起動
-          </Button>
-        </Grid>
-        <Grid item xs={4}>
-          <Button
-            variant="contained"
-            fullWidth={true}
-            startIcon={<HighlightOffIcon />}
-            onClick={stopPressControlKeyProcess}
-          >
-            停止
-          </Button>
-        </Grid>
-      </Grid>
     </div>
   );
 }
