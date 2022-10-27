@@ -1,4 +1,4 @@
-import Select from '../select/Select';
+import Select from '../selects/select/Select';
 import style from './style.module.scss';
 interface Props {
   dataList: number[];

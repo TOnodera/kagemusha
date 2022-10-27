@@ -1,7 +1,7 @@
 import { HOURS, MINUTES } from '../../../consts/time';
+import HourSelect from '../../atom/select/hour-select/HourSelect';
+import MinuteSelect from '../../atom/select/minute-select/MinuteSelect';
 import style from './style.module.scss';
-import HourSelect from '../../atom/hour-select/HourSelect';
-import MinuteSelect from '../../atom/minute-select/MinuteSelect';
 
 const ScheduleSelector = () => {
   return (

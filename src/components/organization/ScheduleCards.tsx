@@ -1,4 +1,4 @@
-import ScheduleCard from '../molecule/ScheduleCard';
+import ScheduleCard from '../atom/card/schedule-card/ScheduleCard';
 
 const ScheduleCards = () => {
   return <ScheduleCard />;

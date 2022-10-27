@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
-import './App.css';
+import './App.scss';
 import ShowStateComponent from './components/ShowStateComponent';
 import Titlebar from './components/window/titlebar/Titlebar';
-import style from './style.module.scss';
 import ScheduleCards from './components/organization/ScheduleCards';
 
 function App() {
@@ -34,7 +33,7 @@ function App() {
   };
 
   return (
-    <div className={style.app}>
+    <div>
       <Titlebar />
       <ShowStateComponent show={isBusy} />
 
