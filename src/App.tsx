@@ -3,6 +3,11 @@ import { invoke } from '@tauri-apps/api/tauri';
 import './App.scss';
 import Titlebar from './components/window/titlebar/Titlebar';
 import ScheduleCards from './components/organization/schedule-cards/ScheduleCards';
+import DefaultCard from './components/atom/card/default-card/DefaultCard';
+import ContentsArea from './components/atom/contents-area/ContentsArea';
+import Overlay from './components/atom/overlay/Overlay';
+import Loading from './components/atom/loading/Loading';
+import ErrorButton from './components/atom/button/error-button/ErrorButton';
 
 function App() {
   const durationTime = 60 * 1000; // 1分に一回押下する
@@ -34,7 +39,19 @@ function App() {
   return (
     <>
       <Titlebar />
-      <ScheduleCards />
+      <ContentsArea>
+        <DefaultCard />
+        <ScheduleCards />
+      </ContentsArea>
+      <Overlay isDisplay={true}>
+        <Loading
+          text="実行中"
+          onClick={() => {
+            alert('clicked...');
+          }}
+        />
+        <ErrorButton text="停止" />
+      </Overlay>
     </>
   );
 }

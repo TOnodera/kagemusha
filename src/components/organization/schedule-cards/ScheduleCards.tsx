@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import ScheduleCard from '../../atom/card/schedule-card/ScheduleCard';
 import style from './style.module.scss';
-
 const ScheduleCards = () => {
   const [scheduleCards, setScheduleCards] = useState({
     cards: [

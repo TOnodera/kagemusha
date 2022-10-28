@@ -1,5 +1,6 @@
 import ScheduleSelector from '../../../molecule/schedule-selector/ScheduleSelector';
 import AddButton from '../../button/add-button/AddButton';
+import BasicButton from '../../button/basic-button/BasicButton';
 import Card from '../card/Card';
 import style from './style.module.scss';
 
@@ -39,6 +40,9 @@ export default function ScheduleCard(props: Props) {
           }}
         />
       ))}
+      <div className={style.startButtonWrapper}>
+        <BasicButton text="このスケジュールで起動する" />
+      </div>
     </Card>
   );
 }
