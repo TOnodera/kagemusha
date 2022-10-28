@@ -1,7 +1,11 @@
 import BasicButton from '../../button/basic-button/BasicButton';
 import Card from '../card/Card';
 import style from './style.module.scss';
-const DefaultCard = () => {
+
+interface Props {
+  onStartButton: () => void;
+}
+const DefaultCard = (props: Props) => {
   return (
     <Card>
       <div className={style.content}>
@@ -10,7 +14,7 @@ const DefaultCard = () => {
           Teamsで退席中にならないようにします。
         </p>
       </div>
-      <BasicButton text="今すぐ起動する" />
+      <BasicButton text="今すぐ起動する" onClick={props.onStartButton} />
     </Card>
   );
 };

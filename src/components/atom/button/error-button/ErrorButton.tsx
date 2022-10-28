@@ -1,14 +1,21 @@
+import BasicButton from '../basic-button/BasicButton';
 import style from './style.module.scss';
 interface Props {
   text: string;
+  onClick: () => void;
+  backgroundColor?: string;
+  color?: string;
 }
 const ErrorButton = (props: Props) => {
+  const backgroundColor = props.backgroundColor ?? '#ce1436';
+  const color = props.color ?? '#fff';
   return (
-    <div className={style.errorButtonWrapper}>
-      <button type="button" className={style.errorButton}>
-        {props.text}
-      </button>
-    </div>
+    <BasicButton
+      onClick={props.onClick}
+      text={props.text}
+      backgroundColor={backgroundColor}
+      color={color}
+    />
   );
 };
 

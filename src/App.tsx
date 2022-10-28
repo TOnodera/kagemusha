@@ -11,7 +11,7 @@ import ErrorButton from './components/atom/button/error-button/ErrorButton';
 
 function App() {
   const durationTime = 60 * 1000; // 1分に一回押下する
-  const [isBusy, setIsBusy] = useState(false);
+  const [isRunning, setIsRunning] = useState(false);
   const [timerId, setTimerId] = useState(null as unknown as NodeJS.Timer);
 
   // tauriコマンド実行
@@ -21,7 +21,7 @@ function App() {
 
   // コントロールキー押下プロセス開始
   const startPressControlKeyProcess = () => {
-    setIsBusy(true);
+    setIsRunning(true);
     const id = setInterval(() => {
       pressControlKey();
     }, durationTime);
@@ -30,8 +30,8 @@ function App() {
 
   // コントロールキー押下プロセス停止
   const stopPressControlKeyProcess = () => {
-    if (isBusy) {
-      setIsBusy(false);
+    if (isRunning) {
+      setIsRunning(false);
       clearInterval(timerId);
     }
   };
@@ -40,17 +40,17 @@ function App() {
     <>
       <Titlebar />
       <ContentsArea>
-        <DefaultCard />
+        <DefaultCard onStartButton={startPressControlKeyProcess} />
         <ScheduleCards />
       </ContentsArea>
-      <Overlay isDisplay={true}>
+      <Overlay isDisplay={isRunning}>
         <Loading
           text="実行中"
           onClick={() => {
-            alert('clicked...');
+            stopPressControlKeyProcess();
           }}
         />
-        <ErrorButton text="停止" />
+        <ErrorButton text="停止" onClick={stopPressControlKeyProcess} />
       </Overlay>
     </>
   );
