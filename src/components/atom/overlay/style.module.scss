@@ -4,8 +4,7 @@
     top: 30px; // Windowのタイトルバーの分
     width: 100%;
     height: calc(100% - 30px); // Windowのタイトルバーの分の30px引いてあげる
-    background-color: #000;
-    opacity: 0.5;
+    background-color: rgba(0,0,0,0.5);
     z-index: 9999;
     .content{
         display: flex;

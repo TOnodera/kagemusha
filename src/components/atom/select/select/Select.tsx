@@ -6,12 +6,12 @@ interface Props {
 }
 const Select = (props: Props) => {
   return (
-    <select className={style.select}>
+    <select className={style.select} defaultValue={props.value}>
       <option value="">{props.placeHolderText}</option>
 
       {props.dataList.map((data) => {
         return (
-          <option value={data} key={data} selected={props.value === data}>
+          <option value={data} key={data}>
             {data}
           </option>
         );
