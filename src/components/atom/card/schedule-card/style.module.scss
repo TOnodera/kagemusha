@@ -1,14 +1,16 @@
-.scheduleCard{
-    width: 100%;
-    .addButtonWrapper{
-        .addButton{
-            width: 10%;
-            background-color: #777ee3;
-            margin: 0 auto;
-            color: #fff;
-            text-align: center;
-            padding: 5px;
-            border-radius: 5px;
-        }
+
+.addButtonWrapper{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 150px;
+    margin-left: 20px;
+    margin-top: 10px;
+    border: 1px solid #777;
+    border-radius: 5px;
+    .buttonDescription{
+        font-size: 0.8rem;
+        padding-left: 5px;
+        width: 120px; 
     }
-}
+}  
