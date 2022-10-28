@@ -1,0 +1,6 @@
+.scheduleCards{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,350px);
+    align-items: center;
+    justify-content: space-between;
+}

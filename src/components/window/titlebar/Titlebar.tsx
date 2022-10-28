@@ -1,5 +1,5 @@
-import "./style.scss";
-import { appWindow } from "@tauri-apps/api/window";
+import './style.scss';
+import { appWindow } from '@tauri-apps/api/window';
 
 export default function Titlebar() {
   return (

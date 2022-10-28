@@ -55,10 +55,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 200,
-        "resizable": false,
-        "title": "影武者",
-        "width": 450,
+        "height":700,
+        "resizable": true,
+        "title": "kagemusha",
+        "width": 1160,
         "decorations": false   
       }
     ]

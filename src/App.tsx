@@ -1,12 +1,8 @@
 import { useState } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
-import './App.css';
-import { Button } from '@mui/material';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import Grid from '@mui/material/Grid';
-import ShowStateComponent from './components/ShowStateComponent';
+import './App.scss';
 import Titlebar from './components/window/titlebar/Titlebar';
+import ScheduleCards from './components/organization/schedule-cards/ScheduleCards';
 
 function App() {
   const durationTime = 60 * 1000; // 1分に一回押下する
@@ -38,29 +34,7 @@ function App() {
   return (
     <>
       <Titlebar />
-      <ShowStateComponent show={isBusy} />
-      <Grid container justifyContent="space-around" alignItems="center">
-        <Grid item xs={4}>
-          <Button
-            variant="contained"
-            startIcon={<PlayCircleOutlineIcon />}
-            onClick={startPressControlKeyProcess}
-            fullWidth={true}
-          >
-            起動
-          </Button>
-        </Grid>
-        <Grid item xs={4}>
-          <Button
-            variant="contained"
-            fullWidth={true}
-            startIcon={<HighlightOffIcon />}
-            onClick={stopPressControlKeyProcess}
-          >
-            停止
-          </Button>
-        </Grid>
-      </Grid>
+      <ScheduleCards />
     </>
   );
 }
