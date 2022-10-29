@@ -11,7 +11,7 @@ interface Props {
 const ScheduleSelector = (props: Props) => {
   return (
     <>
-      <div className={style.timeSelector}>
+      <div className={`${style.timeSelector} ${style.render}`}>
         <div>
           <HourSelect
             value={props.from ? props.from.split(':')[0] : undefined}
