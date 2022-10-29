@@ -30,42 +30,20 @@ const ScheduleCards = () => {
     });
   };
 
-  /*
-  const onChangeSchedule = (
-    cardId: string,
-    scheduleId: string,
-    newSchedule: Schedule
-  ) => {
-    setScheduleCards((scheduleCards) => {
-      const cards = scheduleCards.cards.map((card) => {
-        if (card.id === cardId) {
-          const schedules = card.schedules.map((schedule) => {
-            // 変更対象
-            if (schedule.id === scheduleId) {
-              return newSchedule;
-            }
-            // 変更対象以外は元のデータを返す
-            return schedule;
-          });
-          return {
-            id: card.id,
-            schedules
-          };
-        }
-        return card;
-      });
-      return { cards };
-    });
-  };
-  */
-
   const onDeleteSchedule = (cardId: string, scheduleId: string) => {
+    // 1個しかない場合は削除させない
+    const count = scheduleCards.cards.find((card) => cardId === card.id)
+      ?.schedules.length;
+    if (!count) {
+      return;
+    }
+    if (count <= 1) {
+      return;
+    }
+    // データ更新
     setScheduleCards((scheduleCards) => {
-      // const newScheduleCards = Object.assign({}, scheduleCards);
-      // delete newScheduleCards.cards[cardIdx].schedules[scheduleIdx];
       const cards = scheduleCards.cards.map((card) => {
         const schedules = card.schedules.filter((schedule) => {
-          console.log(card.id, cardId, schedule.id, scheduleId);
           return !(card.id === cardId && schedule.id === scheduleId);
         });
         return { id: card.id, schedules };
