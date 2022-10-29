@@ -3,6 +3,7 @@ interface Props {
   dataList: string[];
   placeHolderText: string;
   value?: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 const HourSelect = (props: Props) => {
   return (
@@ -10,6 +11,7 @@ const HourSelect = (props: Props) => {
       value={props.value}
       dataList={props.dataList}
       placeHolderText={props.placeHolderText}
+      onChange={props.onChange}
     />
   );
 };

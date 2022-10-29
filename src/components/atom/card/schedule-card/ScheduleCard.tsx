@@ -7,14 +7,21 @@ import style from './style.module.scss';
 
 interface Props {
   schedules: Schedule[];
-  cardId: string;
-  onAddSchedule: (cardId: string) => void;
-  onDeleteSchedule: (cardId: string, scheduleId: string) => void;
+  onAddSchedule: () => void;
+  onDeleteSchedule: (scheduleId: string) => void;
+  onDispatchSchedule: () => void;
+  onChange: (schedultTime: ScheduleTime) => void;
 }
 export default function ScheduleCard(props: Props) {
-  const { onAddSchedule, cardId, schedules, onDeleteSchedule } = props;
+  const {
+    onChange,
+    onDispatchSchedule,
+    onAddSchedule,
+    schedules,
+    onDeleteSchedule
+  } = props;
   const onAddButtonClick = () => {
-    onAddSchedule(cardId);
+    onAddSchedule();
   };
   return (
     <Card>
@@ -28,11 +35,13 @@ export default function ScheduleCard(props: Props) {
         return (
           <FadeIn key={schedule.id}>
             <ScheduleSelector
+              id={schedule.id}
               from={schedule.from}
               to={schedule.to}
               onDeleteSchedule={() => {
-                onDeleteSchedule(cardId, schedule.id);
+                onDeleteSchedule(schedule.id);
               }}
+              onChange={onChange}
             />
           </FadeIn>
         );
@@ -40,9 +49,7 @@ export default function ScheduleCard(props: Props) {
       <div className={style.startButtonWrapper}>
         <BasicButton
           text="このスケジュールで起動する"
-          onClick={() => {
-            alert();
-          }}
+          onClick={onDispatchSchedule}
         />
       </div>
     </Card>

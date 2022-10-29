@@ -3,67 +3,69 @@ import ScheduleCard from '../../atom/card/schedule-card/ScheduleCard';
 import { v4 as uuid } from 'uuid';
 import style from './style.module.scss';
 const ScheduleCards = () => {
-  const makeDefaultSchedule = () => {
+  const makeDefaultSchedule = (): Schedule => {
     return { id: uuid(), from: '00:00', to: '00:00' };
   };
-  const [scheduleCards, setScheduleCards] = useState({
-    cards: [
-      {
-        id: uuid(),
-        schedules: [makeDefaultSchedule()]
-      }
-    ]
-  } as ScheduleCards);
+  const [scheduleCard, setScheduleCards] = useState({
+    schedules: [makeDefaultSchedule()] as Schedule[]
+  } as Schedules);
 
-  const onAddSchedule = (cardId: string) => {
-    setScheduleCards((scheduleCards) => {
-      const cards = scheduleCards.cards.map((card) => {
-        if (card.id === cardId) {
-          return {
-            id: card.id,
-            schedules: [...card.schedules, { ...makeDefaultSchedule() }]
-          };
-        }
-        return card;
-      });
-      return { cards };
+  // スケジュール追加時の処理
+  const onAddSchedule = () => {
+    setScheduleCards((scheduleCard) => {
+      return { schedules: [...scheduleCard.schedules, makeDefaultSchedule()] };
     });
   };
 
-  const onDeleteSchedule = (cardId: string, scheduleId: string) => {
+  // スケジュール削除時の処理
+  const onDeleteSchedule = (scheduleId: string) => {
     // 1個しかない場合は削除させない
-    const count = scheduleCards.cards.find((card) => cardId === card.id)
-      ?.schedules.length;
-    if (!count) {
-      return;
-    }
+    const count = scheduleCard.schedules.length;
     if (count <= 1) {
       return;
     }
     // データ更新
-    setScheduleCards((scheduleCards) => {
-      const cards = scheduleCards.cards.map((card) => {
-        const schedules = card.schedules.filter((schedule) => {
-          return !(card.id === cardId && schedule.id === scheduleId);
-        });
-        return { id: card.id, schedules };
-      });
-
-      return { cards };
+    setScheduleCards((scheduleCard) => {
+      return {
+        schedules: [
+          ...scheduleCard.schedules.filter(
+            (schedule) => schedule.id !== scheduleId
+          )
+        ]
+      };
     });
+  };
+
+  // セレクタ変更時の処理
+  const onChange = (scheduleTime: ScheduleTime) => {
+    const schedules = scheduleCard.schedules.map((schedule) => {
+      if (schedule.id === scheduleTime.id) {
+        return {
+          id: scheduleTime.id,
+          from: `${scheduleTime.fromHour}:${scheduleTime.fromMinute}`,
+          to: `${scheduleTime.toHour}:${scheduleTime.toMinute}`
+        };
+      }
+      return schedule;
+    });
+    console.log(schedules);
+    setScheduleCards({ schedules });
+  };
+
+  // スケジューラー起動処理
+  const onDispatchSchedule = () => {
+    alert('teeest');
   };
 
   return (
     <div className={style.scheduleCards}>
-      {scheduleCards.cards.map((card) => (
-        <ScheduleCard
-          onAddSchedule={onAddSchedule}
-          onDeleteSchedule={onDeleteSchedule}
-          cardId={card.id}
-          schedules={card.schedules}
-          key={card.id}
-        />
-      ))}
+      <ScheduleCard
+        onDispatchSchedule={onDispatchSchedule}
+        onAddSchedule={onAddSchedule}
+        onDeleteSchedule={onDeleteSchedule}
+        schedules={scheduleCard.schedules}
+        onChange={onChange}
+      />
     </div>
   );
 };

@@ -3,10 +3,15 @@ interface Props {
   dataList: string[];
   placeHolderText: string;
   value?: string;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 const Select = (props: Props) => {
   return (
-    <select className={style.select} defaultValue={props.value}>
+    <select
+      className={style.select}
+      defaultValue={props.value}
+      onChange={(e) => props.onChange(e)}
+    >
       <option value="">{props.placeHolderText}</option>
 
       {props.dataList.map((data) => {
