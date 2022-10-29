@@ -7,21 +7,14 @@ import style from './style.module.scss';
 
 interface Props {
   schedules: Schedule[];
-  cardIdx: number;
-  onChangeSchedule: (
-    cardIdx: number,
-    scheduleIdx: number,
-    schedule: Schedule
-  ) => void;
-  onDeleteSchedule: (cardIdx: number, scheduleIdx: number) => void;
+  cardId: string;
+  onAddSchedule: (cardId: string) => void;
+  onDeleteSchedule: (cardId: string, scheduleId: string) => void;
 }
 export default function ScheduleCard(props: Props) {
-  const { onChangeSchedule, cardIdx, schedules, onDeleteSchedule } = props;
+  const { onAddSchedule, cardId, schedules, onDeleteSchedule } = props;
   const onAddButtonClick = () => {
-    onChangeSchedule(cardIdx, schedules.length + 1, {
-      from: '00:00',
-      to: '00:00'
-    });
+    onAddSchedule(cardId);
   };
   return (
     <Card>
@@ -31,17 +24,19 @@ export default function ScheduleCard(props: Props) {
           <div className={style.buttonDescription}>スケジュールを追加</div>
         </div>
       </div>
-      {schedules.map((schedule, idx) => (
-        <FadeIn key={idx}>
-          <ScheduleSelector
-            from={schedule.from}
-            to={schedule.to}
-            onDeleteSchedule={() => {
-              onDeleteSchedule(cardIdx, idx);
-            }}
-          />
-        </FadeIn>
-      ))}
+      {schedules.map((schedule) => {
+        return (
+          <FadeIn key={schedule.id}>
+            <ScheduleSelector
+              from={schedule.from}
+              to={schedule.to}
+              onDeleteSchedule={() => {
+                onDeleteSchedule(cardId, schedule.id);
+              }}
+            />
+          </FadeIn>
+        );
+      })}
       <div className={style.startButtonWrapper}>
         <BasicButton
           text="このスケジュールで起動する"

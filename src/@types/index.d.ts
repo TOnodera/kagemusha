@@ -1,12 +1,14 @@
 interface Schedule {
+  id: string;
   from: string;
   to: string;
 }
 
-interface Schedules {
+interface Card {
+  id: string;
   schedules: Schedule[];
 }
 
 interface ScheduleCards {
-  cards: Schedules[];
+  cards: Card[];
 }
