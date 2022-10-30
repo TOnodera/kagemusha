@@ -1,21 +1,36 @@
 .titlebar {
-  height: 30px;
+  height: 29px;
   background: #777ee3;
   user-select: none;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-}
-.titlebar-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-}
-.titlebar-button:hover {
-  background: #5bbec3;
+  .titlebar-icon{
+    img{
+      height: 29px;
+      border-bottom: 1px solid #777ee3;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      padding-right: 10px;
+      background-color: #fff;
+    }
+  }
+  .titlebar-buttons{
+    display: flex;
+    justify-content: flex-end;
+    width: 100px;
+    .titlebar-button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: 29px;
+      height: 29px;
+      &:hover {
+        background: #555aa0;
+      }
+    }
+  }
 }
