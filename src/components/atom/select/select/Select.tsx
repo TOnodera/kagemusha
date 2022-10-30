@@ -9,7 +9,7 @@ const Select = (props: Props) => {
   return (
     <select
       className={style.select}
-      defaultValue={props.value}
+      value={props.value}
       onChange={(e) => props.onChange(e)}
     >
       <option value="">{props.placeHolderText}</option>

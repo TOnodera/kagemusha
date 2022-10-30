@@ -12,11 +12,11 @@ interface Props {
   onChange: (scheduleTime: ScheduleTime) => void;
 }
 const ScheduleSelector = (props: Props) => {
-  const [fromHour, setFromHour] = useState('00');
-  const [fromMinute, setFromMinute] = useState('00');
-  const [toHour, setToHour] = useState('00');
-  const [toMinute, setToMinute] = useState('00');
   const { id, from, to, onDeleteSchedule, onChange } = props;
+  const [fromHour, setFromHour] = useState(from.split(':')[0]);
+  const [fromMinute, setFromMinute] = useState(from.split(':')[1]);
+  const [toHour, setToHour] = useState(to.split(':')[0]);
+  const [toMinute, setToMinute] = useState(to.split(':')[1]);
 
   useEffect(() => {
     onChange({
@@ -25,7 +25,7 @@ const ScheduleSelector = (props: Props) => {
       fromMinute,
       toHour,
       toMinute
-    });
+    } as ScheduleTime);
   }, [fromHour, fromMinute, toHour, toMinute]);
 
   return (
@@ -33,7 +33,7 @@ const ScheduleSelector = (props: Props) => {
       <div className={`${style.timeSelector} ${style.render}`}>
         <div>
           <HourSelect
-            value={from.split(':')[0]}
+            value={fromHour}
             dataList={HOURS}
             placeHolderText="時"
             onChange={(e) => setFromHour(e.target.value)}
@@ -41,7 +41,7 @@ const ScheduleSelector = (props: Props) => {
         </div>
         <div>
           <MinuteSelect
-            value={from.split(':')[1]}
+            value={fromMinute}
             dataList={MINUTES}
             placeHolderText="分"
             onChange={(e) => setFromMinute(e.target.value)}
@@ -50,7 +50,7 @@ const ScheduleSelector = (props: Props) => {
         <div>～</div>
         <div>
           <HourSelect
-            value={to.split(':')[0]}
+            value={toHour}
             dataList={HOURS}
             placeHolderText="時"
             onChange={(e) => setToHour(e.target.value)}
@@ -58,7 +58,7 @@ const ScheduleSelector = (props: Props) => {
         </div>
         <div>
           <MinuteSelect
-            value={to.split(':')[1]}
+            value={toMinute}
             dataList={MINUTES}
             placeHolderText="分"
             onChange={(e) => setToMinute(e.target.value)}

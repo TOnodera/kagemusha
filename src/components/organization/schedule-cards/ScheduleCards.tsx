@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ScheduleCard from '../../atom/card/schedule-card/ScheduleCard';
 import { v4 as uuid } from 'uuid';
 import style from './style.module.scss';
+import { DateTime } from 'luxon';
 const ScheduleCards = () => {
   const makeDefaultSchedule = (): Schedule => {
     return { id: uuid(), from: '00:00', to: '00:00' };
@@ -48,13 +49,37 @@ const ScheduleCards = () => {
       }
       return schedule;
     });
-    console.log(schedules);
     setScheduleCards({ schedules });
   };
 
   // スケジューラー起動処理
   const onDispatchSchedule = () => {
-    alert('teeest');
+    // 入力バリデーション
+    // // 同じ値の入力
+    const invalidCombination = scheduleCard.schedules.find((schedule) => {
+      const sameFrom = scheduleCard.schedules.find(
+        (s) => s.from === schedule.from
+      );
+      return sameFrom?.to === schedule.to && sameFrom.id !== schedule.id;
+    });
+    if (invalidCombination) {
+      alert('同じ値');
+    }
+
+    // // fromがtoより大きい値の入力
+    const invalidValue = scheduleCard.schedules.find((schedule) => {
+      const from = DateTime.fromFormat(schedule.from, 'HH:mm');
+      const to = DateTime.fromFormat(schedule.to, 'HH:mm');
+      return to.diff(from, 'minute').minutes < 0;
+    });
+    if (invalidValue) {
+      alert('同じ値の入力');
+    }
+
+    // 選択範囲エラー
+
+    // データ送信
+    console.log(scheduleCard.schedules);
   };
 
   return (
