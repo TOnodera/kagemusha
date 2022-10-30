@@ -2,90 +2,140 @@ import { useState } from 'react';
 import ScheduleCard from '../../atom/card/schedule-card/ScheduleCard';
 import { v4 as uuid } from 'uuid';
 import style from './style.module.scss';
-const ScheduleCards = () => {
-  const makeDefaultSchedule = () => {
+import { DateTime } from 'luxon';
+import ValidationUtils from '../../../utils/ValidationUtils';
+import Swal from 'sweetalert2';
+
+interface Props {
+  onStartWithSchedule: (schedules: Schedule[]) => void;
+}
+const ScheduleCards = (props: Props) => {
+  const makeDefaultSchedule = (): Schedule => {
     return { id: uuid(), from: '00:00', to: '00:00' };
   };
-  const [scheduleCards, setScheduleCards] = useState({
-    cards: [
-      {
-        id: uuid(),
-        schedules: [makeDefaultSchedule()]
+  const [scheduleCard, setScheduleCards] = useState({
+    schedules: [makeDefaultSchedule()] as Schedule[]
+  } as Schedules);
+
+  // スケジュール追加時の処理
+  const onAddSchedule = () => {
+    setScheduleCards((scheduleCard) => {
+      return { schedules: [...scheduleCard.schedules, makeDefaultSchedule()] };
+    });
+  };
+
+  // スケジュール削除時の処理
+  const onDeleteSchedule = (scheduleId: string) => {
+    // 1個しかない場合は削除させない
+    const count = scheduleCard.schedules.length;
+    if (count <= 1) {
+      return;
+    }
+    // データ更新
+    setScheduleCards((scheduleCard) => {
+      return {
+        schedules: [
+          ...scheduleCard.schedules.filter(
+            (schedule) => schedule.id !== scheduleId
+          )
+        ]
+      };
+    });
+  };
+
+  // セレクタ変更時の処理
+  const onChange = (scheduleTime: ScheduleTime) => {
+    const schedules = scheduleCard.schedules.map((schedule) => {
+      if (schedule.id === scheduleTime.id) {
+        return {
+          id: scheduleTime.id,
+          from: `${scheduleTime.fromHour}:${scheduleTime.fromMinute}`,
+          to: `${scheduleTime.toHour}:${scheduleTime.toMinute}`
+        };
       }
-    ]
-  } as ScheduleCards);
-
-  const onAddSchedule = (cardId: string) => {
-    setScheduleCards((scheduleCards) => {
-      const cards = scheduleCards.cards.map((card) => {
-        if (card.id === cardId) {
-          return {
-            id: card.id,
-            schedules: [...card.schedules, { ...makeDefaultSchedule() }]
-          };
-        }
-        return card;
-      });
-      return { cards };
+      return schedule;
     });
+    setScheduleCards({ schedules });
   };
 
-  /*
-  const onChangeSchedule = (
-    cardId: string,
-    scheduleId: string,
-    newSchedule: Schedule
-  ) => {
-    setScheduleCards((scheduleCards) => {
-      const cards = scheduleCards.cards.map((card) => {
-        if (card.id === cardId) {
-          const schedules = card.schedules.map((schedule) => {
-            // 変更対象
-            if (schedule.id === scheduleId) {
-              return newSchedule;
-            }
-            // 変更対象以外は元のデータを返す
-            return schedule;
-          });
-          return {
-            id: card.id,
-            schedules
-          };
+  // スケジューラー起動処理
+  const onDispatchSchedule = () => {
+    // 入力バリデーション
+    // // 同じ値の入力
+    const invalidCombination = scheduleCard.schedules.find((schedule) => {
+      const sameFrom = scheduleCard.schedules.find(
+        (s) => s.from === schedule.from
+      );
+      return sameFrom?.to === schedule.to && sameFrom.id !== schedule.id;
+    });
+    if (invalidCombination) {
+      Swal.fire(
+        '設定エラー',
+        '同じスケジュールが設定されているので同じ値の設定を削除してください。',
+        'error'
+      );
+      return;
+    }
+
+    // // fromがtoより大きい値の入力
+    const invalidValue = scheduleCard.schedules.find((schedule) => {
+      const from = DateTime.fromFormat(schedule.from, 'HH:mm');
+      const to = DateTime.fromFormat(schedule.to, 'HH:mm');
+      return to.diff(from, 'minute').minutes < 0;
+    });
+    if (invalidValue) {
+      Swal.fire(
+        '設定エラー',
+        '開始時刻より終了時刻が早い時間帯になっている設定があるので削除してください。',
+        'error'
+      );
+      return;
+    }
+
+    // 選択範囲エラー
+    // スケジュールされている時間帯に別のスケジュールの時間帯がかぶってたらエラー
+    const invalidFrom = scheduleCard.schedules.find((schedule) => {
+      const invalidSchedule = scheduleCard.schedules.find((s) => {
+        // 自分自身のチェックはしない
+        if (schedule.id === s.id) {
+          return false;
         }
-        return card;
+        return !ValidationUtils.rangeIsValid(schedule.from, s.from, s.to);
       });
-      return { cards };
+      return !!invalidSchedule;
     });
-  };
-  */
-
-  const onDeleteSchedule = (cardId: string, scheduleId: string) => {
-    setScheduleCards((scheduleCards) => {
-      // const newScheduleCards = Object.assign({}, scheduleCards);
-      // delete newScheduleCards.cards[cardIdx].schedules[scheduleIdx];
-      const cards = scheduleCards.cards.map((card) => {
-        const schedules = card.schedules.filter((schedule) => {
-          console.log(card.id, cardId, schedule.id, scheduleId);
-          return !(card.id === cardId && schedule.id === scheduleId);
-        });
-        return { id: card.id, schedules };
+    const invalidTo = scheduleCard.schedules.find((schedule) => {
+      const invalidSchedule = scheduleCard.schedules.find((s) => {
+        // 自分自身のチェックはしない
+        if (schedule.id === s.id) {
+          return false;
+        }
+        return !ValidationUtils.rangeIsValid(schedule.to, s.from, s.to);
       });
-
-      return { cards };
+      return !!invalidSchedule;
     });
+    if (invalidFrom || invalidTo) {
+      Swal.fire(
+        '設定エラー',
+        '重複している時間帯があるので重複しないように再設定してください。',
+        'error'
+      );
+      return;
+    }
+
+    // データ送信
+    props.onStartWithSchedule(scheduleCard.schedules);
   };
 
   return (
     <div className={style.scheduleCards}>
-      {scheduleCards.cards.map((card) => (
-        <ScheduleCard
-          onAddSchedule={onAddSchedule}
-          onDeleteSchedule={onDeleteSchedule}
-          cardId={card.id}
-          schedules={card.schedules}
-          key={card.id}
-        />
-      ))}
+      <ScheduleCard
+        onDispatchSchedule={onDispatchSchedule}
+        onAddSchedule={onAddSchedule}
+        onDeleteSchedule={onDeleteSchedule}
+        schedules={scheduleCard.schedules}
+        onChange={onChange}
+      />
     </div>
   );
 };

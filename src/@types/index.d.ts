@@ -4,11 +4,14 @@ interface Schedule {
   to: string;
 }
 
-interface Card {
-  id: string;
+interface Schedules {
   schedules: Schedule[];
 }
 
-interface ScheduleCards {
-  cards: Card[];
+interface ScheduleTime {
+  id: string;
+  fromHour: string;
+  fromMinute: string;
+  toHour: string;
+  toMinute: string;
 }
