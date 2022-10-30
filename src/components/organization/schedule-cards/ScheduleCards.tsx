@@ -3,6 +3,7 @@ import ScheduleCard from '../../atom/card/schedule-card/ScheduleCard';
 import { v4 as uuid } from 'uuid';
 import style from './style.module.scss';
 import { DateTime } from 'luxon';
+import ValidationUtils from '../../../utils/ValidationUtils';
 const ScheduleCards = () => {
   const makeDefaultSchedule = (): Schedule => {
     return { id: uuid(), from: '00:00', to: '00:00' };
@@ -77,8 +78,29 @@ const ScheduleCards = () => {
     }
 
     // 選択範囲エラー
+    const invalidFrom = scheduleCard.schedules.find((schedule) => {
+      const invalidSchedule = scheduleCard.schedules.find((s) => {
+        if (schedule.id === s.id) {
+          return false;
+        }
+        return !ValidationUtils.rangeIsValid(schedule.from, s.from, s.to);
+      });
+      return !!invalidSchedule;
+    });
+    const invalidTo = scheduleCard.schedules.find((schedule) => {
+      const invalidSchedule = scheduleCard.schedules.find((s) => {
+        if (schedule.id === s.id) {
+          return false;
+        }
+        return !ValidationUtils.rangeIsValid(schedule.to, s.from, s.to);
+      });
+      return !!invalidSchedule;
+    });
+    if (invalidFrom || invalidTo) {
+      alert('選択範囲エラー');
+    }
 
-    // データ送信
+    // データ送 信
     console.log(scheduleCard.schedules);
   };
 

@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 
 export default class ValidationUtils {
-  static checkRange(
+  static rangeIsValid(
     target: string,
     rangeFrom: string,
     rangeTo: string
