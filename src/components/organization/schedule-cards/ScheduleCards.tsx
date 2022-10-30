@@ -2,9 +2,6 @@ import { useState } from 'react';
 import ScheduleCard from '../../atom/card/schedule-card/ScheduleCard';
 import { v4 as uuid } from 'uuid';
 import style from './style.module.scss';
-import { DateTime } from 'luxon';
-import ValidationUtils from '../../../utils/ValidationUtils';
-import Swal from 'sweetalert2';
 
 interface Props {
   onStartWithSchedule: (schedules: Schedule[]) => void;
@@ -58,79 +55,10 @@ const ScheduleCards = (props: Props) => {
     setScheduleCards({ schedules });
   };
 
-  // スケジューラー起動処理
-  const onDispatchSchedule = () => {
-    // 入力バリデーション
-    // // 同じ値の入力
-    const invalidCombination = scheduleCard.schedules.find((schedule) => {
-      const sameFrom = scheduleCard.schedules.find(
-        (s) => s.from === schedule.from
-      );
-      return sameFrom?.to === schedule.to && sameFrom.id !== schedule.id;
-    });
-    if (invalidCombination) {
-      Swal.fire(
-        '設定エラー',
-        '同じスケジュールが設定されているので同じ値の設定を削除してください。',
-        'error'
-      );
-      return;
-    }
-
-    // // fromがtoより大きい値の入力
-    const invalidValue = scheduleCard.schedules.find((schedule) => {
-      const from = DateTime.fromFormat(schedule.from, 'HH:mm');
-      const to = DateTime.fromFormat(schedule.to, 'HH:mm');
-      return to.diff(from, 'minute').minutes < 0;
-    });
-    if (invalidValue) {
-      Swal.fire(
-        '設定エラー',
-        '開始時刻より終了時刻が早い時間帯になっている設定があるので削除してください。',
-        'error'
-      );
-      return;
-    }
-
-    // 選択範囲エラー
-    // スケジュールされている時間帯に別のスケジュールの時間帯がかぶってたらエラー
-    const invalidFrom = scheduleCard.schedules.find((schedule) => {
-      const invalidSchedule = scheduleCard.schedules.find((s) => {
-        // 自分自身のチェックはしない
-        if (schedule.id === s.id) {
-          return false;
-        }
-        return !ValidationUtils.rangeIsValid(schedule.from, s.from, s.to);
-      });
-      return !!invalidSchedule;
-    });
-    const invalidTo = scheduleCard.schedules.find((schedule) => {
-      const invalidSchedule = scheduleCard.schedules.find((s) => {
-        // 自分自身のチェックはしない
-        if (schedule.id === s.id) {
-          return false;
-        }
-        return !ValidationUtils.rangeIsValid(schedule.to, s.from, s.to);
-      });
-      return !!invalidSchedule;
-    });
-    if (invalidFrom || invalidTo) {
-      Swal.fire(
-        '設定エラー',
-        '重複している時間帯があるので重複しないように再設定してください。',
-        'error'
-      );
-      return;
-    }
-
-    // データ送信
-    props.onStartWithSchedule(scheduleCard.schedules);
-  };
-
   return (
     <div className={style.scheduleCards}>
       <ScheduleCard
-        onDispatchSchedule={onDispatchSchedule}
+        onStartWithSchedule={props.onStartWithSchedule}
         onAddSchedule={onAddSchedule}
         onDeleteSchedule={onDeleteSchedule}
         schedules={scheduleCard.schedules}
