@@ -4,6 +4,7 @@ import { v4 as uuid } from 'uuid';
 import style from './style.module.scss';
 import { DateTime } from 'luxon';
 import ValidationUtils from '../../../utils/ValidationUtils';
+import Swal from 'sweetalert2';
 const ScheduleCards = () => {
   const makeDefaultSchedule = (): Schedule => {
     return { id: uuid(), from: '00:00', to: '00:00' };
@@ -64,7 +65,12 @@ const ScheduleCards = () => {
       return sameFrom?.to === schedule.to && sameFrom.id !== schedule.id;
     });
     if (invalidCombination) {
-      alert('同じ値');
+      Swal.fire(
+        '設定エラー',
+        '同じスケジュールが設定されているので同じ値の設定を削除してください。',
+        'error'
+      );
+      return;
     }
 
     // // fromがtoより大きい値の入力
@@ -74,7 +80,12 @@ const ScheduleCards = () => {
       return to.diff(from, 'minute').minutes < 0;
     });
     if (invalidValue) {
-      alert('同じ値の入力');
+      Swal.fire(
+        '設定エラー',
+        '開始時刻より終了時刻が早い時間帯になっている設定があるので削除してください。',
+        'error'
+      );
+      return;
     }
 
     // 選択範囲エラー
@@ -97,10 +108,15 @@ const ScheduleCards = () => {
       return !!invalidSchedule;
     });
     if (invalidFrom || invalidTo) {
-      alert('選択範囲エラー');
+      Swal.fire(
+        '設定エラー',
+        '重複している時間帯があるので重複しないように再設定してください。',
+        'error'
+      );
+      return;
     }
 
-    // データ送 信
+    // データ送信
     console.log(scheduleCard.schedules);
   };
 
