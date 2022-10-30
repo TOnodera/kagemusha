@@ -5,7 +5,11 @@ import style from './style.module.scss';
 import { DateTime } from 'luxon';
 import ValidationUtils from '../../../utils/ValidationUtils';
 import Swal from 'sweetalert2';
-const ScheduleCards = () => {
+
+interface Props {
+  onStartWithSchedule: (schedules: Schedule[]) => void;
+}
+const ScheduleCards = (props: Props) => {
   const makeDefaultSchedule = (): Schedule => {
     return { id: uuid(), from: '00:00', to: '00:00' };
   };
@@ -89,8 +93,10 @@ const ScheduleCards = () => {
     }
 
     // 選択範囲エラー
+    // スケジュールされている時間帯に別のスケジュールの時間帯がかぶってたらエラー
     const invalidFrom = scheduleCard.schedules.find((schedule) => {
       const invalidSchedule = scheduleCard.schedules.find((s) => {
+        // 自分自身のチェックはしない
         if (schedule.id === s.id) {
           return false;
         }
@@ -100,6 +106,7 @@ const ScheduleCards = () => {
     });
     const invalidTo = scheduleCard.schedules.find((schedule) => {
       const invalidSchedule = scheduleCard.schedules.find((s) => {
+        // 自分自身のチェックはしない
         if (schedule.id === s.id) {
           return false;
         }
@@ -117,7 +124,7 @@ const ScheduleCards = () => {
     }
 
     // データ送信
-    console.log(scheduleCard.schedules);
+    props.onStartWithSchedule(scheduleCard.schedules);
   };
 
   return (
