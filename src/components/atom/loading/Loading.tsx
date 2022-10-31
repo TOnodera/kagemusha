@@ -3,7 +3,7 @@ import style from './style.module.scss';
 
 interface Props {
   text: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 const Loading = (props: Props) => {
   return (
