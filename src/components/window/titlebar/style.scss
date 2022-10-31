@@ -1,5 +1,6 @@
 .titlebar {
-  height: 29px;
+  $height: 30px;
+  height: $height;
   background: #777ee3;
   user-select: none;
   display: flex;
@@ -10,11 +11,9 @@
   right: 0;
   .titlebar-icon{
     img{
-      height: 29px;
-      border-bottom: 1px solid #777ee3;
-      border-top-right-radius: 10px;
-      border-bottom-right-radius: 10px;
-      padding-right: 10px;
+      height: 20px;
+      margin: 3px;
+      padding: 2px;
       background-color: #fff;
     }
   }
@@ -26,8 +25,8 @@
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      width: 29px;
-      height: 29px;
+      width: $height;
+      height: $height;
       &:hover {
         background: #555aa0;
       }
