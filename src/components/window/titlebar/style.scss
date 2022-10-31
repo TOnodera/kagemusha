@@ -1,21 +1,35 @@
 .titlebar {
-  height: 30px;
+  $height: 30px;
+  height: $height;
   background: #777ee3;
   user-select: none;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-}
-.titlebar-button {
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
-  width: 30px;
-  height: 30px;
-}
-.titlebar-button:hover {
-  background: #5bbec3;
+  .titlebar-icon{
+    img{
+      height: 20px;
+      margin: 3px;
+      padding: 2px;
+      background-color: #fff;
+    }
+  }
+  .titlebar-buttons{
+    display: flex;
+    justify-content: flex-end;
+    width: 100px;
+    .titlebar-button {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      width: $height;
+      height: $height;
+      &:hover {
+        background: #555aa0;
+      }
+    }
+  }
 }
