@@ -1,5 +1,4 @@
 import ScheduleSelector from '../../molecule/schedule-selector/ScheduleSelector';
-import AddButton from '../../atom/button/add-button/AddButton';
 import BasicButton from '../../atom/button/basic-button/BasicButton';
 import FadeIn from '../../atom/button/fade-in/FadeIn';
 import Card from '../../atom/card/card/Card';
@@ -15,18 +14,17 @@ import ErrorButton from '../../atom/button/error-button/ErrorButton';
 import { pressControlKey } from '../../../commands/pressControlKeyCommand';
 import { DURATION } from '../../../consts/time';
 import ReservedElement from '../../atom/elements/reserved-element/ReservedElement';
+import AddScheduleButton from '../../molecule/add-schedule-button/AddSheduleButton';
 
 interface Props {
   refIsRunningFlag: React.MutableRefObject<boolean>;
-  setRunningFlagIsOn: () => void;
-  setRunningFlagIsOff: () => void;
 }
 export default function ScheduleCard(props: Props) {
   const makeDefaultSchedule = (): Schedule => {
     return { id: uuid(), from: '00:00', to: '00:00' };
   };
 
-  const { refIsRunningFlag, setRunningFlagIsOn, setRunningFlagIsOff } = props;
+  const { refIsRunningFlag } = props;
   // ステータス
   const [schedules, setSchedules] = useState([makeDefaultSchedule()]);
   const [timeoutIds, setTimeoutIds] = useState(
@@ -45,7 +43,7 @@ export default function ScheduleCard(props: Props) {
   }, [timeoutIds]);
 
   // スケジュール追加時の処理
-  const onAddButtonClick = () => {
+  const onAddScheduleButtonClick = () => {
     setSchedules((schedules) => {
       return [...schedules, makeDefaultSchedule()];
     });
@@ -88,6 +86,7 @@ export default function ScheduleCard(props: Props) {
         `${today} ${schedule.from}`,
         'yyyy-MM-dd HH:mm'
       );
+      // 実行開始時刻までの秒数を取得
       const waitMilis = startTime.diff(
         DateTime.now(),
         'millisecond'
@@ -110,16 +109,15 @@ export default function ScheduleCard(props: Props) {
           // 終了時刻過ぎたら停止
           if (0 < DateTime.now().diff(endTime, 'minute').minutes) {
             // 状態更新
-            setRunningFlagIsOff();
             setIsScheduledTimerRunning(false);
             setTimeoutIds((timeoutIds) =>
               timeoutIds.filter((to) => to.timeoutId !== timeoutId)
             );
           }
+          // Ctrl押下
           pressControlKey();
         }, DURATION);
         // 状態更新
-        setRunningFlagIsOn();
         setIsScheduledTimerRunning(true);
         setRunningTimerId({ scheduleId: schedule.id, timerId });
       }, waitMilis);
@@ -220,7 +218,6 @@ export default function ScheduleCard(props: Props) {
 
   // スケジュールで起動した処理を停止
   const onStopButtonClick = () => {
-    setRunningFlagIsOff();
     setIsScheduledTimerRunning(false);
     clearInterval(runningTimerId.timerId);
     setTimeoutIds((timeoutIds) =>
@@ -245,6 +242,7 @@ export default function ScheduleCard(props: Props) {
         });
         setTimeoutIds([]);
         setIsScheduledTimerRunning(false);
+        setSchedules([makeDefaultSchedule()]);
       }
     });
   };
@@ -252,10 +250,10 @@ export default function ScheduleCard(props: Props) {
     <>
       <Card>
         <div className={style.header}>
-          <div className={style.addButtonWrapper}>
-            <AddButton onClick={onAddButtonClick} />
-            <div className={style.buttonDescription}>スケジュールを追加</div>
-          </div>
+          <AddScheduleButton
+            onClick={onAddScheduleButtonClick}
+            isScheduled={isScheduled}
+          />
         </div>
         {schedules.map((schedule) => {
           return (
@@ -268,6 +266,7 @@ export default function ScheduleCard(props: Props) {
                   onDeleteSchedule(schedule.id);
                 }}
                 onChange={onChange}
+                isScheduled={isScheduled}
               />
             </FadeIn>
           );

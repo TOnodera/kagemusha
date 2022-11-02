@@ -10,9 +10,10 @@ interface Props {
   to: string;
   onDeleteSchedule: () => void;
   onChange: (scheduleTime: ScheduleTime) => void;
+  isScheduled: boolean;
 }
 const ScheduleSelector = (props: Props) => {
-  const { id, from, to, onDeleteSchedule, onChange } = props;
+  const { id, from, to, onDeleteSchedule, onChange, isScheduled } = props;
   const [fromHour, setFromHour] = useState(from.split(':')[0]);
   const [fromMinute, setFromMinute] = useState(from.split(':')[1]);
   const [toHour, setToHour] = useState(to.split(':')[0]);
@@ -64,7 +65,14 @@ const ScheduleSelector = (props: Props) => {
             onChange={(e) => setToMinute(e.target.value)}
           />
         </div>
-        <div className={style.remove} onClick={onDeleteSchedule}>
+        <div
+          className={style.remove}
+          onClick={onDeleteSchedule}
+          style={{
+            backgroundColor: isScheduled ? '#777' : '#ce1436',
+            pointerEvents: isScheduled ? 'none' : 'auto'
+          }}
+        >
           削除
         </div>
       </div>

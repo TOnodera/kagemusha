@@ -3,25 +3,11 @@
     width: 300px;
     margin: 10px auto;
 }
-.addButtonWrapper{
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    width: 150px;
-    border: 1px solid #777;
-    border-radius: 5px;
-    margin-top: 10px;
-    .buttonDescription{
-        font-size: 0.8rem;
-        padding-left: 5px;
-        width: 120px; 
-    }
-}  
 .startButtonWrapper{
     margin: 10px 0;
 }
-
 // sweet-alert2設定
 .swal2-title{
-    font-size: 1.5rem !important;
+    font-size: 1rem !important;
+    margin: 20px;
 }
