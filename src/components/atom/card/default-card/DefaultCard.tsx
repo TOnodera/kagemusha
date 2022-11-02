@@ -9,12 +9,11 @@ import Card from '../card/Card';
 import style from './style.module.scss';
 
 interface Props {
-  isRunningFlag: boolean;
   setRunningFlagIsOn: () => void;
   setRunningFlagIsOff: () => void;
 }
 const DefaultCard = (props: Props) => {
-  const { isRunningFlag, setRunningFlagIsOn, setRunningFlagIsOff } = props;
+  const { setRunningFlagIsOn, setRunningFlagIsOff } = props;
   const [runntinTimerId, setRunningTimerId] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
 

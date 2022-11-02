@@ -4,9 +4,11 @@ import Titlebar from './components/window/titlebar/Titlebar';
 import DefaultCard from './components/atom/card/default-card/DefaultCard';
 import ContentsArea from './components/atom/contents-area/ContentsArea';
 import ScheduleCard from './components/organization/schedule-card/ScheduleCard';
+import { useValueRef } from './hooks/useValueRef';
 
 function App() {
   const [isRunningFlag, setIsRunningFlag] = useState(false);
+  const refIsRunningFlag = useValueRef(isRunningFlag);
 
   const setRunningFlagIsOn = () => {
     setIsRunningFlag(true);
@@ -23,12 +25,11 @@ function App() {
         <DefaultCard
           setRunningFlagIsOn={setRunningFlagIsOn}
           setRunningFlagIsOff={setRunningFlagIsOff}
-          isRunningFlag={isRunningFlag}
         />
         <ScheduleCard
           setRunningFlagIsOn={setRunningFlagIsOn}
           setRunningFlagIsOff={setRunningFlagIsOff}
-          isRunningFlag={isRunningFlag}
+          refIsRunningFlag={refIsRunningFlag}
         />
       </ContentsArea>
     </>

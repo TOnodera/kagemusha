@@ -17,7 +17,7 @@ import { DURATION } from '../../../consts/time';
 import ReservedElement from '../../atom/elements/reserved-element/ReservedElement';
 
 interface Props {
-  isRunningFlag: boolean;
+  refIsRunningFlag: React.MutableRefObject<boolean>;
   setRunningFlagIsOn: () => void;
   setRunningFlagIsOff: () => void;
 }
@@ -26,7 +26,7 @@ export default function ScheduleCard(props: Props) {
     return { id: uuid(), from: '00:00', to: '00:00' };
   };
 
-  const { isRunningFlag, setRunningFlagIsOn, setRunningFlagIsOff } = props;
+  const { refIsRunningFlag, setRunningFlagIsOn, setRunningFlagIsOff } = props;
   // ステータス
   const [schedules, setSchedules] = useState([makeDefaultSchedule()]);
   const [timeoutIds, setTimeoutIds] = useState(
@@ -94,6 +94,13 @@ export default function ScheduleCard(props: Props) {
       ).milliseconds;
       // 現在時刻から開始時刻までまつ
       const timeoutId = window.setTimeout(() => {
+        // 即時実行で実行中の場合は起動させない
+        if (refIsRunningFlag.current) {
+          setTimeoutIds((timeoutIds) =>
+            timeoutIds.filter((to) => to.timeoutId !== timeoutId)
+          );
+          return;
+        }
         // 「押下プロセス」
         const timerId = window.setInterval(() => {
           const endTime = DateTime.fromFormat(
@@ -102,7 +109,6 @@ export default function ScheduleCard(props: Props) {
           );
           // 終了時刻過ぎたら停止
           if (0 < DateTime.now().diff(endTime, 'minute').minutes) {
-            clearInterval(timerId);
             // 状態更新
             setRunningFlagIsOff();
             setIsScheduledTimerRunning(false);
@@ -112,8 +118,6 @@ export default function ScheduleCard(props: Props) {
           }
           pressControlKey();
         }, DURATION);
-        // id解放
-        clearTimeout(timeoutId);
         // 状態更新
         setRunningFlagIsOn();
         setIsScheduledTimerRunning(true);
