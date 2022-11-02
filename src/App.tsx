@@ -26,11 +26,7 @@ function App() {
           setRunningFlagIsOn={setRunningFlagIsOn}
           setRunningFlagIsOff={setRunningFlagIsOff}
         />
-        <ScheduleCard
-          setRunningFlagIsOn={setRunningFlagIsOn}
-          setRunningFlagIsOff={setRunningFlagIsOff}
-          refIsRunningFlag={refIsRunningFlag}
-        />
+        <ScheduleCard refIsRunningFlag={refIsRunningFlag} />
       </ContentsArea>
     </>
   );
