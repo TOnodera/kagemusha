@@ -88,4 +88,4 @@ export const MINUTES = [
   '59'
 ];
 
-export const DURATION = 1000 * 60; // 60秒
+export const DURATION = 1000 * 15; // 15秒
