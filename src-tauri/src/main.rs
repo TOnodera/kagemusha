@@ -9,7 +9,6 @@ use inputbot::KeybdKey::LControlKey;
 async fn press_control_key() {
     LControlKey.press();
     LControlKey.release();
-    print!("pressed...");
 }
 fn main() {
     tauri::Builder::default()
